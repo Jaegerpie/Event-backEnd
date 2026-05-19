@@ -123,6 +123,12 @@ app.get("/api/userchats",async (req,res)=>{
 
    try {
     const userChats = await UserChats.find({userId:userId})
+
+    // If the user has no chats yet, avoid crashing on userChats[0]
+    if (!userChats.length) {
+      return res.status(200).send([]);
+    }
+    
     res.status(200).send(userChats[0].chats)
     
    } catch (error) {
